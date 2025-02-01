@@ -2,9 +2,24 @@ services:
   portainer:
     image: portainer/portainer-ce:latest
     container_name: portainer
-    ports:
-      - 9443:9443
+    #ports:
+      #- 9443:9443
     volumes:
-      - ./data:/data
+      - data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
+    networks:
+      - portainer
+
+
+networks:
+  portainer:
+    external: true
+
+volumes:
+  data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=fileserver.tyler-clark.com,rw,vers=4.1
+      device: ":/srv/docker/portainer/data"
