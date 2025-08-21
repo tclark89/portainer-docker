@@ -4,8 +4,10 @@ services:
     container_name: portainer
     #ports:
       #- 9443:9443
+    environment:
+      - TRUSTED_ORIGINS=portainer.tyler-clark.com
     volumes:
-      - data:/data
+      - ./data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
     networks:
@@ -16,10 +18,3 @@ networks:
   portainer:
     external: true
 
-volumes:
-  data:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=192.168.10.10,rw,vers=4.1
-      device: ":/srv/docker/portainer-docker/data"
